@@ -42,10 +42,13 @@ while True:
             key = list(map(int, key.split()))
             cypher = RecurrentAffineCypher(key[0], key[1], key[2], key[3])
         cypher.info()
-    if state in ('replaces', 'Affine', 'RecAffine'):
+    else:
+        mode = input("Введите операцию (E/D/Info - Encrypt/Decrypt/Get key in cypher)\n")
+        if mode == "Info":
+            cypher.info()
+            continue
         print("Введите текст для зашифрования/расшифрования\n(Заглавные буквы автоматически заменятся на строчные, введите пустую строку для остановки):")
         text = text_input().lower()
-        mode = input("Введите операцию (E/D - Encrypt/Decrypt)\n")
         if mode == "E":
             print(cypher.encrypt(text))
         elif mode == "D":

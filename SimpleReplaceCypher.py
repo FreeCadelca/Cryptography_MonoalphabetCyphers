@@ -5,7 +5,7 @@ from AlphabetConfig import *
 
 class SimpleReplaceCypher:
     def __init__(self, key=None):  # ключ - подстановка математического описания шифра в виде словаря
-        if key is None:
+        if key is None:  # если нужно сгенерировать ключ с помощью программы
             shuffled_values = list(A.values()).copy()
             random.shuffle(shuffled_values)
             i = 0
