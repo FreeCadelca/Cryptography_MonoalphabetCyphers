@@ -1,7 +1,17 @@
+import sys
 from AlphabetConfig import *
 from AffineCypher import *
 from RecurrentAffineCypher import *
 from SimpleReplaceCypher import *
+
+
+def text_input():
+    text = ''
+    line = input()
+    while line != '':
+        text += line + '\n'
+        line = input()
+    return text
 
 
 state = 'chooseCypher'
@@ -33,7 +43,8 @@ while True:
             cypher = RecurrentAffineCypher(key[0], key[1], key[2], key[3])
         cypher.info()
     if state in ('replaces', 'Affine', 'RecAffine'):
-        text = input("Введите текст для зашифрования/расшифрования (Заглавные буквы автоматически заменятся на строчные):\n").lower()
+        print("Введите текст для зашифрования/расшифрования\n(Заглавные буквы автоматически заменятся на строчные, введите пустую строку для остановки):")
+        text = text_input().lower()
         mode = input("Введите операцию (E/D - Encrypt/Decrypt)\n")
         if mode == "E":
             print(cypher.encrypt(text))

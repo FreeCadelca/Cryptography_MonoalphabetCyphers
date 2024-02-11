@@ -17,26 +17,32 @@ class RecurrentAffineCypher:
         keys_beta = [self.__key_beta_1, self.__key_beta_2]
         y = ''
         for i in range(len(x)):
+            if x[i] not in A.values():
+                y += x[i]
+                continue
             if i < 2:
-                y += A[((keys_alpha[i] * A_ID[x[i]]) + keys_beta[i]) % m]
+                y += A[((keys_alpha[-1] * A_ID[x[i]]) + keys_beta[-1]) % m]
             else:
                 keys_alpha.append((keys_alpha[-1] * keys_alpha[-2]) % m)
                 keys_beta.append((keys_beta[-1] + keys_beta[-2]) % m)
-                y += A[((keys_alpha[i] * A_ID[x[i]]) + keys_beta[i]) % m]
+                y += A[((keys_alpha[-1] * A_ID[x[i]]) + keys_beta[-1]) % m]
         return y
 
-    def decrypt(self, x):
+    def decrypt(self, y):
         return_keys_alpha = [inv(self.__key_alpha_1), inv(self.__key_alpha_2)]
         keys_beta = [self.__key_beta_1, self.__key_beta_2]
-        y = ''
-        for i in range(len(x)):
+        x = ''
+        for i in range(len(y)):
+            if y[i] not in A.values():
+                x += y[i]
+                continue
             if i < 2:
-                y += A[((A_ID[x[i]] - keys_beta[i]) * return_keys_alpha[i]) % m]
+                x += A[((A_ID[y[i]] - keys_beta[-1]) * return_keys_alpha[-1]) % m]
             else:
                 return_keys_alpha.append((return_keys_alpha[-1] * return_keys_alpha[-2]) % m)
                 keys_beta.append((keys_beta[-1] + keys_beta[-2]) % m)
-                y += A[((A_ID[x[i]] - keys_beta[i]) * return_keys_alpha[i]) % m]
-        return y
+                x += A[((A_ID[y[i]] - keys_beta[-1]) * return_keys_alpha[-1]) % m]
+        return x
 
     def info(self):
         print(f'keys:\n'
